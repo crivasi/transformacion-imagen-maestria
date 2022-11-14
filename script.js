@@ -60,9 +60,9 @@ const llenarSelectConDispositivosDisponibles = () => {
         option.value = dispositivo.deviceId;
         option.text = dispositivo.label;
         $listaDeDispositivos.appendChild(option);
-        
+
         if (dispositivo.label.includes('back')) {
-          listaDeDispositivos.selectedIndex = dispositivo.deviceId;
+          $listaDeDispositivos.selectedIndex = dispositivo.deviceId;
         }
       });
     }
