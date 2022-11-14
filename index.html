@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <!--
+		Tomar una fotografía y descargarla
+	    @date 2019-04-23
+	    @author parzibyte
+	    @web parzibyte.me/blog
+	-->
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <title>Imagen-Perspectiva</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Cabin:ital@0;1&family=Nunito:ital,wght@0,400;0,600;1,400&display=swap");
+
+      :root {
+        --box-shadow: 0 0 25px -3px #d2dbff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        text-align: center;
+        background: #2858db;
+        font-family: "Cabin", sans-serif;
+        color: #4e4c66;
+      }
+
+      h1 {
+        color: #ffffff;
+        margin: 0;
+        padding: 28px 5px 30px;
+        font-size: 22px;
+        text-transform: uppercase;
+      }
+
+      video {
+        border-radius: 20px;
+        box-shadow: var(--box-shadow);
+      }
+
+      canvas {
+        border-radius: 10px;
+        box-shadow: var(--box-shadow);
+      }
+
+      .container {
+        background-color: #f8f9fe;
+        padding: 25px;
+        min-height: 100vh;
+        border-radius: 50px 0 0;
+      }
+
+      .btn {
+        padding: 12px 15px;
+        margin: 20px 0;
+        margin-right: 10px;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 20px;
+        font-family: inherit;
+        color: #2858db;
+        box-shadow: var(--box-shadow);
+        font-size: inherit;
+        width: 100%;
+        cursor: pointer;
+      }
+
+      .oculto {
+        display: none;
+      }
+
+      .visible {
+        display: block;
+      }
+
+      #seccion-foto-tomada {
+        margin-top: 30px;
+      }
+
+      #seccion-foto-tomada strong {
+        color: #17b5a0;
+        text-transform: uppercase;
+      }
+
+      #tomar-foto {
+        background-color: #2255da;
+        color: white;
+        width: 100%;
+      }
+
+      #transformar-foto {
+        background-color: #17b5a0;
+        color: white;
+        width: 100%;
+      }
+
+      .btn:disabled {
+        background-color: #e0e0e0 !important;
+        color: #bcbcbc !important;
+      }
+
+      #lista-dispositivos {
+        font-size: inherit;
+        margin-top: 10px;
+        background-color: #93b1ff;
+        padding: 8px;
+        color: #304699;
+        border: none;
+        border-radius: 20px;
+        font-family: inherit;
+        box-shadow: var(--box-shadow);
+      }
+
+      .info {
+        color: whitesmoke;
+        margin: 0px 0;
+        margin-bottom: 15px;
+        background-color: white;
+        border-radius: 15px 0 15px 0;
+        padding: 5px;
+      }
+
+      .info p {
+        margin: 0;
+        font-size: 14px;
+      }
+
+      .info p.materia {
+        font-style: italic;
+        color: #b2b4cb;
+        margin-bottom: 5px;
+        font-size: 10px;
+        text-align: right;
+      }
+
+      .info p.estudiantes {
+        color: #7a8097;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      .select-camera {
+        display: none;
+      }
+
+      @media only screen and (max-width: 700px) {
+        video,
+        canvas {
+          max-width: 100%;
+        }
+
+        .select-camera {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Perspectiva de Imagen</h1>
+    <div class="container">
+      <div class="info">
+        <p class="materia">Matemáticas para la computación II</p>
+        <p class="estudiantes">
+          Alejandra Guerrero / Sebastián Vahos / Christian Rivas
+        </p>
+      </div>
+      <div id="seccion-tomar-foto">
+        <div class="select-camera">
+          <strong>Puedes seleccionar tu cámara</strong>
+          <select name="lista-dispositivos" id="lista-dispositivos"></select>
+        </div>
+        <button id="tomar-foto" class="btn" disabled>Tomar foto</button>
+        <video muted="muted" id="video"></video>
+      </div>
+      <div id="seccion-foto-tomada" class="oculto">
+        <p>Selecciona los <strong>puntos</strong> sobre la imagen para transformarla</p>
+        <button id="cancelar" class="btn">Cancelar</button>
+        <canvas id="canvas"></canvas>
+        <button id="transformar-foto" class="btn" disabled>Transformar</button>
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>
