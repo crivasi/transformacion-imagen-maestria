@@ -60,6 +60,10 @@ const llenarSelectConDispositivosDisponibles = () => {
         option.value = dispositivo.deviceId;
         option.text = dispositivo.label;
         $listaDeDispositivos.appendChild(option);
+        
+        if (dispositivo.label.includes('back')) {
+          listaDeDispositivos.selectedIndex = dispositivo.deviceId;
+        }
       });
     }
   });
@@ -106,6 +110,9 @@ const resetear = () => {
     $estado.innerHTML = 'Parece que tu navegador no soporta esta característica. Intenta actualizarlo.';
     return;
   }
+
+  llenarSelectConDispositivosDisponibles();
+
   //Aquí guardaremos el stream globalmente
   let stream;
 
@@ -140,7 +147,7 @@ const resetear = () => {
       (streamObtenido) => {
         // Aquí ya tenemos permisos, ahora sí llenamos el select,
         // pues si no, no nos daría el nombre de los dispositivos
-        llenarSelectConDispositivosDisponibles();
+        // llenarSelectConDispositivosDisponibles();
 
         // Escuchar cuando seleccionen otra opción y entonces llamar a esta función
         $listaDeDispositivos.onchange = () => {
