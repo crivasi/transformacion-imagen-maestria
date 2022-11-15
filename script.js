@@ -123,11 +123,6 @@ if (tieneSoporteUserMedia()) {
       option.value = deviceInfo.deviceId;
       if (deviceInfo.kind === "videoinput") {
         option.text = deviceInfo.label || `Camera ${videoSelect.length + 1}`;
-
-        if (deviceInfo.label.includes("back")) {
-          option.selected = "selected";
-        }
-
         videoSelect.appendChild(option);
       }
     }
@@ -153,8 +148,12 @@ if (tieneSoporteUserMedia()) {
 
   function gotStream(stream) {
     window.stream = stream; // make stream available to console
+
+    const videoTracks = stream.getVideoTracks();
+    const videoTrackCameraBack = videoTracks.filter((videoTrack) => videoTrack.label.includes('back'));
+
     videoSelect.selectedIndex = [...videoSelect.options].findIndex(
-      (option) => option.text === stream.getVideoTracks()[0].label
+      (option) => option.text === videoTrackCameraBack ? videoTrackCameraBack.label : stream.getVideoTracks()[0].label
     );
     videoElement.srcObject = stream;
     videoElement.play();
