@@ -129,14 +129,16 @@ if (tieneSoporteUserMedia()) {
         option.text = deviceInfo.label || `Camera ${videoSelect.length + 1}`;
 
         if (deviceInfo.label.includes('back')) {
+          alert('por back camera');
           option.selected = 'selected';
-          let changeEvent = new Event("change");
-          videoSelect.dispatchEvent(changeEvent);
         }
 
         videoSelect.appendChild(option);
       }
     }
+
+    let changeEvent = new Event("change");
+    videoSelect.dispatchEvent(changeEvent);
   }
 
   function getStream() {
