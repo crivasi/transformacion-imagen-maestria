@@ -82,6 +82,9 @@ const llenarSelectConDispositivosDisponibles = () => {
         $listaDeDispositivos.appendChild(option);
       });
     }
+    
+    let changeEvent = new Event("change");
+    $listaDeDispositivos.dispatchEvent(changeEvent);
   });
 };
 
@@ -177,8 +180,6 @@ $listaDeDispositivos.onchange = () => {
   }
 
   llenarSelectConDispositivosDisponibles();
-  let changeEvent = new Event("change");
-  $listaDeDispositivos.dispatchEvent(changeEvent);
 
   $tomarFotoBoton.addEventListener("click", function () {
     //Pausar reproducción
