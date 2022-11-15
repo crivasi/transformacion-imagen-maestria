@@ -81,6 +81,8 @@ const llenarSelectConDispositivosDisponibles = () => {
 
         $listaDeDispositivos.appendChild(option);
       });
+      let changeEvent = new Event("change");
+      $listaDeDispositivos.dispatchEvent(changeEvent);
     }
   });
 };
@@ -177,8 +179,6 @@ $listaDeDispositivos.onchange = () => {
   }
 
   llenarSelectConDispositivosDisponibles();
-  // Mostrar stream con el ID del primer dispositivo, luego el usuario puede cambiar
-  mostrarStream(dispositivoSeleccionadoId);
 
   $tomarFotoBoton.addEventListener("click", function () {
     //Pausar reproducción
