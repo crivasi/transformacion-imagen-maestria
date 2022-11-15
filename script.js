@@ -152,6 +152,9 @@ const resetear = () => {
   $video.play();
 };
 
+//Aquí guardaremos el stream globalmente
+let stream;
+
 $listaDeDispositivos.onchange = () => {
   console.log("change");
   // Detener el stream
@@ -172,9 +175,6 @@ $listaDeDispositivos.onchange = () => {
       "Parece que tu navegador no soporta esta característica. Intenta actualizarlo.";
     return;
   }
-
-  //Aquí guardaremos el stream globalmente
-  let stream;
 
   llenarSelectConDispositivosDisponibles();
   // Mostrar stream con el ID del primer dispositivo, luego el usuario puede cambiar
