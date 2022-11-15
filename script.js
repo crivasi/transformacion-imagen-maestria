@@ -151,12 +151,14 @@ if (tieneSoporteUserMedia()) {
 
     const videoTracks = stream.getVideoTracks();
     const videoTrackCameraBack = videoTracks.find((videoTrack) => videoTrack.label.includes('back'));
-    const labelToCompare = videoTrackCameraBack ? videoTrackCameraBack.label : stream.getVideoTracks()[0].label;
+    const labelToCompare = videoTrackCameraBack ? videoTrackCameraBack.label : videoTracks[0].label;
 
     videoSelect.selectedIndex = [...videoSelect.options].findIndex(
       (option) => option.text === labelToCompare
     );
+
     videoElement.srcObject = stream;
+    
     videoElement.play();
     tomarFotoBoton.removeAttribute("disabled");
   }
