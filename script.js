@@ -62,6 +62,8 @@ const llenarSelectConDispositivosDisponibles = () => {
       }
     });
 
+    console.log('dispositivosDeVideo', dispositivosDeVideo);
+
     // Vemos si encontramos algún dispositivo, y en caso de que si, entonces llamamos a la función
     // y le pasamos el id de dispositivo
     if (dispositivosDeVideo.length > 0) {
@@ -95,7 +97,9 @@ const mostrarStream = (idDeDispositivo) => {
     (streamObtenido) => {
       // Aquí ya tenemos permisos, ahora sí llenamos el select,
       // pues si no, no nos daría el nombre de los dispositivos
-      llenarSelectConDispositivosDisponibles();
+      if (!dispositivoSeleccionadoId) {
+        llenarSelectConDispositivosDisponibles();
+      }
 
       // Escuchar cuando seleccionen otra opción y entonces llamar a esta función
 
