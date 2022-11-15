@@ -117,12 +117,21 @@ if (tieneSoporteUserMedia()) {
 
   function gotDevices(deviceInfos) {
     window.deviceInfos = deviceInfos; // make available to console
+    /* const option = document.createElement("option");
+  option.value = "test";
+  option.text = "---";
+  videoSelect.appendChild(option); */
 
     for (const deviceInfo of deviceInfos) {
       const option = document.createElement("option");
       option.value = deviceInfo.deviceId;
       if (deviceInfo.kind === "videoinput") {
         option.text = deviceInfo.label || `Camera ${videoSelect.length + 1}`;
+
+        if (deviceInfo.label.includes('back')) {
+          option.selected = 'selected';
+        }
+
         videoSelect.appendChild(option);
       }
     }
@@ -136,6 +145,7 @@ if (tieneSoporteUserMedia()) {
     }
 
     const videoSource = videoSelect.value;
+    console.log('videoSelect.value', videoSelect.value);
     const constraints = {
       video: { deviceId: videoSource ? { exact: videoSource } : undefined },
     };
@@ -151,14 +161,16 @@ if (tieneSoporteUserMedia()) {
 
     const videoTracks = stream.getVideoTracks();
     const videoTrackCameraBack = videoTracks.find((videoTrack) => videoTrack.label.includes('back'));
+    console.log('videoTrackCameraBack', videoTrackCameraBack);
     const labelToCompare = videoTrackCameraBack ? videoTrackCameraBack.label : videoTracks[0].label;
+    console.log('labelToCompare', labelToCompare);
 
     videoSelect.selectedIndex = [...videoSelect.options].findIndex(
       (option) => option.text === labelToCompare
     );
 
     videoElement.srcObject = stream;
-    
+
     videoElement.play();
     tomarFotoBoton.removeAttribute("disabled");
   }
