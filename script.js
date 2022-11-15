@@ -62,8 +62,6 @@ const llenarSelectConDispositivosDisponibles = () => {
       }
     });
 
-    console.log('dispositivosDeVideo', dispositivosDeVideo);
-
     // Vemos si encontramos algún dispositivo, y en caso de que si, entonces llamamos a la función
     // y le pasamos el id de dispositivo
     if (dispositivosDeVideo.length > 0) {
@@ -87,6 +85,7 @@ const llenarSelectConDispositivosDisponibles = () => {
 };
 
 const mostrarStream = (idDeDispositivo) => {
+  console.log('idDeDispositivo', idDeDispositivo);
   _getUserMedia(
     {
       video: {
@@ -162,16 +161,17 @@ const resetear = () => {
     return;
   }
 
+  //Aquí guardaremos el stream globalmente
+  let stream;
+
   llenarSelectConDispositivosDisponibles();
   // Mostrar stream con el ID del primer dispositivo, luego el usuario puede cambiar
   mostrarStream(dispositivoSeleccionadoId);
 
-  //Aquí guardaremos el stream globalmente
-  let stream;
-
   // Comenzamos pidiendo los dispositivos
 
   $listaDeDispositivos.onchange = () => {
+    console.log('change');
     // Detener el stream
     if (stream) {
       stream.getTracks().forEach(function (track) {
