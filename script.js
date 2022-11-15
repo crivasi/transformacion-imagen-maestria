@@ -45,7 +45,7 @@ const obtenerDispositivos = () => navigator.mediaDevices.enumerateDevices();
 let dispositivoSeleccionadoId = null;
 
 const llenarSelectConDispositivosDisponibles = () => {
-  // limpiarSelect();
+  limpiarSelect();
 
   /* const option = document.createElement("option");
   option.value = "test";
@@ -82,7 +82,8 @@ const llenarSelectConDispositivosDisponibles = () => {
         $listaDeDispositivos.appendChild(option);
       });
     }
-    
+
+    $listaDeDispositivos.value = dispositivoSeleccionadoId;
     let changeEvent = new Event("change");
     $listaDeDispositivos.dispatchEvent(changeEvent);
   });
