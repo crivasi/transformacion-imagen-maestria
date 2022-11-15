@@ -130,6 +130,8 @@ if (tieneSoporteUserMedia()) {
 
         if (deviceInfo.label.includes('back')) {
           option.selected = 'selected';
+          let changeEvent = new Event("change");
+          videoSelect.dispatchEvent(changeEvent);
         }
 
         videoSelect.appendChild(option);
@@ -145,6 +147,7 @@ if (tieneSoporteUserMedia()) {
     }
 
     const videoSource = videoSelect.value;
+    console.log('videoSelect', videoSelect.options);
     console.log('videoSelect.value', videoSelect.value);
     const constraints = {
       video: { deviceId: videoSource ? { exact: videoSource } : undefined },
@@ -158,7 +161,7 @@ if (tieneSoporteUserMedia()) {
 
   function gotStream(stream) {
     window.stream = stream; // make stream available to console
-
+    console.log('stream',stream);
     const videoTracks = stream.getVideoTracks();
     const videoTrackCameraBack = videoTracks.find((videoTrack) => videoTrack.label.includes('back'));
     console.log('videoTrackCameraBack', videoTrackCameraBack);
