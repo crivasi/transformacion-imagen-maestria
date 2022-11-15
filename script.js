@@ -12,6 +12,7 @@ const tieneSoporteUserMedia = () =>
     navigator.webkitGetUserMedia ||
     navigator.msGetUserMedia
   );
+
 const _getUserMedia = (...arguments) =>
   (
     navigator.getUserMedia ||
@@ -44,12 +45,12 @@ const obtenerDispositivos = () => navigator.mediaDevices.enumerateDevices();
 let dispositivoSeleccionadoId = null;
 
 const llenarSelectConDispositivosDisponibles = () => {
-  limpiarSelect();
+  // limpiarSelect();
 
   /* const option = document.createElement("option");
-        option.value = 0;
-        option.text = '---';
-        $listaDeDispositivos.appendChild(option); */
+  option.value = "test";
+  option.text = "---";
+  $listaDeDispositivos.appendChild(option); */
 
   obtenerDispositivos().then((dispositivos) => {
     // Vamos a filtrarlos y guardar aquí los de vídeo
@@ -85,17 +86,17 @@ const llenarSelectConDispositivosDisponibles = () => {
 };
 
 const mostrarStream = (idDeDispositivo) => {
-  console.log("idDeDispositivo", idDeDispositivo);
   _getUserMedia(
     {
       video: {
         // Justo aquí indicamos cuál dispositivo usar
-        deviceId: idDeDispositivo,
+        deviceId: { exact: idDeDispositivo },
       },
     },
     (streamObtenido) => {
       // Aquí ya tenemos permisos, ahora sí llenamos el select,
       // pues si no, no nos daría el nombre de los dispositivos
+
       if (!dispositivoSeleccionadoId) {
         llenarSelectConDispositivosDisponibles();
       }
@@ -113,8 +114,8 @@ const mostrarStream = (idDeDispositivo) => {
     },
     (error) => {
       console.log("Permiso denegado o error: ", error);
-      $estado.innerHTML =
-        "No se puede acceder a la cámara, o no diste permiso.";
+      /* $estado.innerHTML =
+        "No se puede acceder a la cámara, o no diste permiso."; */
     }
   );
 };
@@ -156,7 +157,6 @@ const resetear = () => {
 let stream;
 
 $listaDeDispositivos.onchange = () => {
-  console.log("change");
   // Detener el stream
   if (stream) {
     stream.getTracks().forEach(function (track) {
