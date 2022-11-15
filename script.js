@@ -105,7 +105,7 @@ if (tieneSoporteUserMedia()) {
         console.log("error", error);
       })
       .finally(() => {
-        transformarFotoBoton.textContent("Enviando...");
+        transformarFotoBoton.textContent("Transformar");
         transformarFotoBoton.removeAttribute();
       });
   });
@@ -124,8 +124,8 @@ if (tieneSoporteUserMedia()) {
       if (deviceInfo.kind === "videoinput") {
         option.text = deviceInfo.label || `Camera ${videoSelect.length + 1}`;
 
-        if (deviceInfo.label.includes('back')) {
-          option.selected = 'selected';
+        if (deviceInfo.label.includes("back")) {
+          option.selected = "selected";
         }
 
         videoSelect.appendChild(option);
@@ -166,5 +166,7 @@ if (tieneSoporteUserMedia()) {
     console.error("Error: ", error);
   }
 } else {
-  alert("Parece que tu navegador no soporta esta característica. Intenta actualizarlo.");
+  alert(
+    "Parece que tu navegador no soporta esta característica. Intenta actualizarlo."
+  );
 }
