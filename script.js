@@ -43,6 +43,12 @@ const obtenerDispositivos = () => navigator.mediaDevices.enumerateDevices();
 // Lo que hace es llenar el select con los dispositivos obtenidos
 const llenarSelectConDispositivosDisponibles = () => {
   limpiarSelect();
+
+  const option = document.createElement("option");
+        option.value = 0;
+        option.text = '---';
+        $listaDeDispositivos.appendChild(option);
+
   obtenerDispositivos().then((dispositivos) => {
     const dispositivosDeVideo = [];
     dispositivos.forEach((dispositivo) => {
@@ -55,15 +61,17 @@ const llenarSelectConDispositivosDisponibles = () => {
     // Vemos si encontramos algún dispositivo, y en caso de que si, entonces llamamos a la función
     if (dispositivosDeVideo.length > 0) {
       // Llenar el select
+
       dispositivosDeVideo.forEach((dispositivo) => {
         const option = document.createElement("option");
         option.value = dispositivo.deviceId;
         option.text = dispositivo.label;
-        $listaDeDispositivos.appendChild(option);
-
-        if (dispositivo.label.includes('back')) {
-          $listaDeDispositivos.selectedIndex = dispositivo.deviceId;
+        
+        if (dispositivo.label.includes('Built')) {
+          // option.selected = 'selected';
         }
+
+        $listaDeDispositivos.appendChild(option);
       });
     }
   });
@@ -111,7 +119,7 @@ const resetear = () => {
     return;
   }
 
-  llenarSelectConDispositivosDisponibles();
+  //llenarSelectConDispositivosDisponibles();
 
   //Aquí guardaremos el stream globalmente
   let stream;
@@ -131,9 +139,85 @@ const resetear = () => {
     // Vemos si encontramos algún dispositivo, y en caso de que si, entonces llamamos a la función
     // y le pasamos el id de dispositivo
     if (dispositivosDeVideo.length > 0) {
+        // Llenar el select
+  
+        dispositivosDeVideo.forEach((dispositivo) => {
+          const option = document.createElement("option");
+          option.value = dispositivo.deviceId;
+          option.text = dispositivo.label;
+          
+          if (dispositivo.label.includes('back')) {
+            option.selected = 'selected';
+          }
+  
+          $listaDeDispositivos.appendChild(option);
+        });
       // Mostrar stream con el ID del primer dispositivo, luego el usuario puede cambiar
       mostrarStream(dispositivosDeVideo[0].deviceId);
     }
+  });
+
+  $listaDeDispositivos.onchange = () => {
+    // Detener el stream
+    if (stream) {
+      stream.getTracks().forEach(function (track) {
+        track.stop();
+      });
+    }
+    // Mostrar el nuevo stream con el dispositivo seleccionado
+    mostrarStream($listaDeDispositivos.value);
+  };
+
+  $tomarFotoBoton.addEventListener("click", function () {
+    //Pausar reproducción
+    $video.pause();
+
+    //Obtener contexto del canvas y dibujar sobre él
+    let contexto = $canvas.getContext("2d");
+
+    if (window.innerWidth <= 600) {
+      $canvas.width = $video.videoWidth / 2;
+      $canvas.height = $video.videoHeight / 2;
+    } else {
+      $canvas.width = $video.videoWidth;
+      $canvas.height = $video.videoHeight;
+    }
+
+    contexto.drawImage($video, 0, 0, $canvas.width, $canvas.height);
+
+    let foto = $canvas.toDataURL(); //Esta es la foto, en base 64
+
+    let enlace = document.createElement("a"); // Crear un <a>
+    enlace.download = "imagen.png";
+    enlace.href = foto;
+    //enlace.click();
+    //Reanudar reproducción
+    //$video.play();
+
+    $seccionTomarFoto.classList.toggle('oculto');
+    $seccionFotoTomada.classList.toggle('oculto');
+  });
+
+  $cancelarBoton.addEventListener('click', function () {
+    resetear();
+  });
+
+  $transformarFotoBoton.addEventListener('click', function () {
+    $transformarFotoBoton.textContent('Enviando...');
+    $transformarFotoBoton.setAttribute('disabled', '');
+
+    // hacer fetch
+    fetch('', {
+      method: 'post'
+    }).then(() => {
+      // mirar si descargar la imagen transformada
+      resetear();
+    }).catch((error) => {
+      console.log('error', error);
+    }).finally(() => {
+      $transformarFotoBoton.textContent('Enviando...');
+      $transformarFotoBoton.removeAttribute();
+    });
   });
 
   const mostrarStream = (idDeDispositivo) => {
@@ -150,16 +234,6 @@ const resetear = () => {
         // llenarSelectConDispositivosDisponibles();
 
         // Escuchar cuando seleccionen otra opción y entonces llamar a esta función
-        $listaDeDispositivos.onchange = () => {
-          // Detener el stream
-          if (stream) {
-            stream.getTracks().forEach(function (track) {
-              track.stop();
-            });
-          }
-          // Mostrar el nuevo stream con el dispositivo seleccionado
-          mostrarStream($listaDeDispositivos.value);
-        };
 
         // Simple asignación
         stream = streamObtenido;
@@ -169,57 +243,7 @@ const resetear = () => {
         $video.play().then(() => $tomarFotoBoton.removeAttribute('disabled'));
 
         //Escuchar el click del botón para tomar la foto
-        $tomarFotoBoton.addEventListener("click", function () {
-          //Pausar reproducción
-          $video.pause();
-
-          //Obtener contexto del canvas y dibujar sobre él
-          let contexto = $canvas.getContext("2d");
-
-          if (window.innerWidth <= 600) {
-            $canvas.width = $video.videoWidth / 2;
-            $canvas.height = $video.videoHeight / 2;
-          } else {
-            $canvas.width = $video.videoWidth;
-            $canvas.height = $video.videoHeight;
-          }
-
-          contexto.drawImage($video, 0, 0, $canvas.width, $canvas.height);
-
-          let foto = $canvas.toDataURL(); //Esta es la foto, en base 64
-
-          let enlace = document.createElement("a"); // Crear un <a>
-          enlace.download = "imagen.png";
-          enlace.href = foto;
-          //enlace.click();
-          //Reanudar reproducción
-          //$video.play();
-
-          $seccionTomarFoto.classList.toggle('oculto');
-          $seccionFotoTomada.classList.toggle('oculto');
-        });
-
-        $cancelarBoton.addEventListener('click', function () {
-          resetear();
-        });
-
-        $transformarFotoBoton.addEventListener('click', function () {
-          $transformarFotoBoton.textContent('Enviando...');
-          $transformarFotoBoton.setAttribute('disabled', '');
-
-          // hacer fetch
-          fetch('', {
-            method: 'post'
-          }).then(() => {
-            // mirar si descargar la imagen transformada
-            resetear();
-          }).catch((error) => {
-            console.log('error', error)
-          }).finally(() => {
-            $transformarFotoBoton.textContent('Enviando...');
-            $transformarFotoBoton.removeAttribute();
-          });
-        });
+        
       },
       (error) => {
         console.log("Permiso denegado o error: ", error);
