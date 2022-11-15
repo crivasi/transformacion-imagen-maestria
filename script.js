@@ -170,9 +170,6 @@ if (tieneSoporteUserMedia()) {
       (option) => option.text === labelToCompare
     );
 
-    let changeEvent = new Event("change");
-    videoSelect.dispatchEvent(changeEvent);
-
     videoElement.srcObject = stream;
 
     videoElement.play();
