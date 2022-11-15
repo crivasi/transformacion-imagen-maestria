@@ -130,8 +130,6 @@ if (tieneSoporteUserMedia()) {
 
         if (deviceInfo.label.includes('back')) {
           option.selected = 'selected';
-          let changeEvent = new Event("change");
-          videoSelect.dispatchEvent(changeEvent);
         }
 
         videoSelect.appendChild(option);
@@ -171,6 +169,9 @@ if (tieneSoporteUserMedia()) {
     videoSelect.selectedIndex = [...videoSelect.options].findIndex(
       (option) => option.text === labelToCompare
     );
+
+    let changeEvent = new Event("change");
+    videoSelect.dispatchEvent(changeEvent);
 
     videoElement.srcObject = stream;
 
