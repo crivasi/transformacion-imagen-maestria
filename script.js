@@ -150,7 +150,7 @@ if (tieneSoporteUserMedia()) {
     window.stream = stream; // make stream available to console
 
     const videoTracks = stream.getVideoTracks();
-    const videoTrackCameraBack = videoTracks.filter((videoTrack) => videoTrack.label.includes('back'));
+    const videoTrackCameraBack = videoTracks.find((videoTrack) => videoTrack.label.includes('back'));
 
     videoSelect.selectedIndex = [...videoSelect.options].findIndex(
       (option) => option.text === videoTrackCameraBack ? videoTrackCameraBack.label : stream.getVideoTracks()[0].label
