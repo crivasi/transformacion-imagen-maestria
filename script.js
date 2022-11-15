@@ -92,7 +92,7 @@ const mostrarStream = (idDeDispositivo) => {
     {
       video: {
         // Justo aquí indicamos cuál dispositivo usar
-        deviceId: { exact: idDeDispositivo },
+        deviceId: idDeDispositivo,
       },
     },
     (streamObtenido) => {
