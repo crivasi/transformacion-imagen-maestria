@@ -85,7 +85,7 @@ const llenarSelectConDispositivosDisponibles = () => {
 };
 
 const mostrarStream = (idDeDispositivo) => {
-  console.log('idDeDispositivo', idDeDispositivo);
+  console.log("idDeDispositivo", idDeDispositivo);
   _getUserMedia(
     {
       video: {
@@ -152,6 +152,18 @@ const resetear = () => {
   $video.play();
 };
 
+$listaDeDispositivos.onchange = () => {
+  console.log("change");
+  // Detener el stream
+  if (stream) {
+    stream.getTracks().forEach(function (track) {
+      track.stop();
+    });
+  }
+  // Mostrar el nuevo stream con el dispositivo seleccionado
+  mostrarStream($listaDeDispositivos.value);
+};
+
 (function () {
   // Comenzamos viendo si tiene soporte, si no, nos detenemos
   if (!tieneSoporteUserMedia()) {
@@ -167,20 +179,6 @@ const resetear = () => {
   llenarSelectConDispositivosDisponibles();
   // Mostrar stream con el ID del primer dispositivo, luego el usuario puede cambiar
   mostrarStream(dispositivoSeleccionadoId);
-
-  // Comenzamos pidiendo los dispositivos
-
-  $listaDeDispositivos.onchange = () => {
-    console.log('change');
-    // Detener el stream
-    if (stream) {
-      stream.getTracks().forEach(function (track) {
-        track.stop();
-      });
-    }
-    // Mostrar el nuevo stream con el dispositivo seleccionado
-    mostrarStream($listaDeDispositivos.value);
-  };
 
   $tomarFotoBoton.addEventListener("click", function () {
     //Pausar reproducción
